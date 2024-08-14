@@ -1,7 +1,7 @@
 package com.quickbook.playground.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.quickbook.playground.bo.AccountPayload;
+import com.quickbook.playground.bo.HeaderPayload;
 import com.quickbook.playground.models.AccountResponse;
 import com.quickbook.playground.services.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,8 +32,12 @@ public class AccountController {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
     @PostMapping("/create")
-    public ResponseEntity<AccountResponse> createAccount(@RequestBody AccountPayload accountPayload) throws IOException {
-        return ResponseEntity.ok(accountService.createAccount(accountPayload));
+    public ResponseEntity<AccountResponse> createAccount(
+            @RequestBody AccountPayload accountPayload,
+            @RequestHeader(name = "access-token") String accessToken,
+            @RequestHeader(name = "realmId") Long realmId
+    ) throws IOException {
+        return ResponseEntity.ok(accountService.createAccount(accountPayload, new HeaderPayload(accessToken, realmId)));
     }
 
     @Operation(
@@ -43,7 +47,10 @@ public class AccountController {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
     @GetMapping("/list")
-    public ResponseEntity<List<AccountResponse>> listAccount() throws IOException {
-        return ResponseEntity.ok(accountService.retrieveAllAccount());
+    public ResponseEntity<List<AccountResponse>> listAccount(
+            @RequestHeader(name = "access-token") String accessToken,
+            @RequestHeader(name = "realmId") Long realmId
+    ) throws IOException {
+        return ResponseEntity.ok(accountService.retrieveAllAccount(new HeaderPayload(accessToken, realmId)));
     }
 }

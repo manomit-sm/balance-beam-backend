@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PlaygroundAppApplication {
+public class BalanceBeamApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PlaygroundAppApplication.class, args);
+		SpringApplication.run(BalanceBeamApplication.class, args);
 	}
 
 }

@@ -2,6 +2,4 @@ spring:
   quick-book:
     client-id: ${QUICK_BOOK_CLIENT_ID}
     client-secret: ${QUICK_BOOK_CLIENT_SECRET}
-    refresh-token: ${QUICK_BOOK_REFRESH_TOKEN}
     host: https://sandbox-quickbooks.api.intuit.com
-    realm-id: ${QUICK_BOOK_REALM_ID}
