@@ -22,7 +22,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class BalanceBeamController {
-    private final BalanceBeamService balanceBeamService;
+    private final BalanceBeamService balanceBeamService; 
 
     @Operation(
             summary = "Get OAuth2 Url",

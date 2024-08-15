@@ -27,7 +27,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 
 @Service
-@Slf4j
+@Slf4j 
 public class AccountServiceImpl implements AccountService {
 
     private final QuickBook quickBook;
