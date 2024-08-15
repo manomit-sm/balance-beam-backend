@@ -39,6 +39,9 @@ public class AccountPayload {
 
     private boolean sparse;
 
+    @JsonProperty("MetaData")
+    private MetaData metaData;
+
     @AllArgsConstructor
     @NoArgsConstructor
     @Data
