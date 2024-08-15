@@ -20,20 +20,8 @@ import java.util.List;
 @Service
 @Slf4j
 public class QuickBookImpl implements QuickBook {
-    private final String clientId;
-
-    private final String clientSecret;
-
-    private String token;
-    public QuickBookImpl(
-            @Value("${spring.quick-book.client-id}") String clientId,
-            @Value("${spring.quick-book.client-secret}") String clientSecret
-    ) {
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-    }
     @Override
-    public AuthResponse getAccessToken(String authCode, String redirectUrl) throws OAuthException {
+    public AuthResponse getAccessToken(String authCode, String redirectUrl, String clientId, String clientSecret) throws OAuthException {
         OAuth2Config oAuth2Config = getOAuth2ConfigObject(clientId, clientSecret);
         OAuth2PlatformClient client  = new OAuth2PlatformClient(oAuth2Config);
         final BearerTokenResponse bearerTokenResponse = client.retrieveBearerTokens(authCode, redirectUrl);
@@ -50,7 +38,7 @@ public class QuickBookImpl implements QuickBook {
     }
 
     @Override
-    public AuthResponse getAccessToken(String refreshToken) throws OAuthException {
+    public AuthResponse getAccessToken(String refreshToken, String clientId, String clientSecret) throws OAuthException {
         OAuth2Config oAuth2Config = getOAuth2ConfigObject(clientId, clientSecret);
         OAuth2PlatformClient client  = new OAuth2PlatformClient(oAuth2Config);
         final BearerTokenResponse bearerTokenResponse = client.refreshToken(refreshToken);

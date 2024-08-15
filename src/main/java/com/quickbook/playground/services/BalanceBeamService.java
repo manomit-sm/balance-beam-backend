@@ -12,5 +12,5 @@ public interface BalanceBeamService {
     ClientResponse getClientDetails(String email) throws IOException, InvalidRequestException;
     AuthResponse getAuthDetails(AuthTokenRequest authTokenRequest) throws IOException, OAuthException;
 
-    AuthResponse getAuthDetails(String refreshToken) throws OAuthException;
+    AuthResponse getAuthDetails(String refreshToken, String email) throws OAuthException, IOException;
 }

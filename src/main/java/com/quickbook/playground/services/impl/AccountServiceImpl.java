@@ -76,7 +76,7 @@ public class AccountServiceImpl implements AccountService {
                 .uri(uriBuilder ->
                         uriBuilder
                                 .path("/v3/company/{realmId}/query")
-                                .queryParam("query", "select * from Account where Name like 'B%'")
+                                .queryParam("query", "select * from Account")
                                 .queryParam("minorversion", 73)
                                 .build(header.realmId())
                 ).accept(APPLICATION_JSON)

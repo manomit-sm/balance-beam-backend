@@ -35,11 +35,12 @@ public class BalanceBeamServiceImpl implements BalanceBeamService {
     @Override
     public AuthResponse getAuthDetails(AuthTokenRequest authTokenRequest) throws IOException, OAuthException {
         var client = AppUtils.clientDetails(authTokenRequest.email(), objectMapper);
-        return quickBook.getAccessToken(authTokenRequest.authCode(), client.getRedirectUrl());
+        return quickBook.getAccessToken(authTokenRequest.authCode(), client.getRedirectUrl(), client.getClientId(), client.getClientSecret());
     }
 
     @Override
-    public AuthResponse getAuthDetails(String refreshToken) throws OAuthException {
-        return quickBook.getAccessToken(refreshToken);
+    public AuthResponse getAuthDetails(String refreshToken, String email) throws OAuthException, IOException {
+        var client = AppUtils.clientDetails(email, objectMapper);
+        return quickBook.getAccessToken(refreshToken,client.getClientId(), client.getClientSecret());
     }
 }

@@ -1,5 +1,3 @@
 spring:
   quick-book:
-    client-id: ${QUICK_BOOK_CLIENT_ID}
-    client-secret: ${QUICK_BOOK_CLIENT_SECRET}
     host: https://sandbox-quickbooks.api.intuit.com

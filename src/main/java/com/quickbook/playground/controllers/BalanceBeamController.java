@@ -55,9 +55,10 @@ public class BalanceBeamController {
     })
     @GetMapping("/refresh-token")
     public ResponseEntity<AuthResponse> getAccessTokenFromRefreshToken(
-            @RequestParam String refreshToken
-    ) throws OAuthException {
-        return ResponseEntity.ok(balanceBeamService.getAuthDetails(refreshToken));
+            @RequestParam String refreshToken,
+            @RequestParam String email
+    ) throws OAuthException, IOException {
+        return ResponseEntity.ok(balanceBeamService.getAuthDetails(refreshToken, email));
     }
 
 }
