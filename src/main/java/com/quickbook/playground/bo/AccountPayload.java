@@ -1,6 +1,5 @@
 package com.quickbook.playground.bo;
 
-import com.quickbook.playground.bo.enums.AccountType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,6 +20,9 @@ public class AccountPayload {
     private String acctNum;
 
     @NotNull
-    private AccountType accountType;
+    private String accountType;
+
+    @NotNull
+    private String accountSubType;
 }
 

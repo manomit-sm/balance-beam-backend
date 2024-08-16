@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse createAccount(AccountPayload accountPayload, HeaderPayload header) throws IOException {
-        // log.info("Payload {}", objectMapper.writeValueAsString(AppUtils.createAccountObject(accountPayload)));
+        log.info("Payload {}", objectMapper.writeValueAsString(AppUtils.createAccountObject(accountPayload)));
         Object object =  webClient.post()
                 .uri(uriBuilder ->
                         uriBuilder
@@ -55,7 +55,7 @@ public class AccountServiceImpl implements AccountService {
                 .bodyValue(objectMapper.writeValueAsString(AppUtils.createAccountObject(accountPayload)))
                 .retrieve()
                 .bodyToMono(Object.class)
-                .doOnSuccess(response -> log.info("Account created successfully {}", response))
+                .doOnSuccess(response -> log.info("Account created/updated successfully {}", response))
                 .doOnError(err -> log.warn("Exception {}", err.getMessage(), err))
                 .block();
         final JsonNode jsonNode = new JsonMapper().readTree(objectMapper.writeValueAsString(object));
@@ -68,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
                 .uri(uriBuilder ->
                         uriBuilder
                                 .path("/v3/company/{realmId}/query")
-                                .queryParam("query", "select * from Account")
+                                .queryParam("query", "select * from Account where AccountType")
                                 .queryParam("minorversion", 73)
                                 .build(header.realmId())
                 ).accept(APPLICATION_JSON)
