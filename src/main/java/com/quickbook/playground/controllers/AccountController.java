@@ -53,4 +53,20 @@ public class AccountController {
     ) throws IOException {
         return ResponseEntity.ok(accountService.retrieveAllAccount(new HeaderPayload(accessToken, realmId)));
     }
+
+    @Operation(
+            summary = "Fetch account by id",
+            description = "Fetch account by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<AccountResponse> getAccountById(
+            @PathVariable String id,
+            @RequestHeader(name = "access-token") String accessToken,
+            @RequestHeader(name = "realmId") Long realmId
+    ) throws IOException {
+        return ResponseEntity.ok(accountService.getAccountById(new HeaderPayload(accessToken, realmId), id));
+    }
+
 }

@@ -5,3 +5,6 @@ spring:
     name: playground-app
   profiles:
     active: dev
+  mvc:
+    problemdetails:
+      enabled: true
