@@ -10,6 +10,7 @@ import com.quickbook.playground.bo.AccountPayload;
 import com.quickbook.playground.bo.HeaderPayload;
 import com.quickbook.playground.models.AccountResponse;
 import com.quickbook.playground.services.AccountService;
+import com.quickbook.playground.utils.AppUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .headers(h -> h.setBearerAuth(header.accessToken()))
-                .bodyValue(accountPayload)
+                .bodyValue(objectMapper.writeValueAsString(AppUtils.createAccountObject(accountPayload)))
                 .retrieve()
                 .bodyToMono(Object.class)
                 .doOnSuccess(response -> log.info("Account created successfully {}", response))

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class AccountController {
     })
     @PostMapping("/create")
     public ResponseEntity<AccountResponse> createAccount(
-            @RequestBody AccountPayload accountPayload,
+            @Valid @RequestBody AccountPayload accountPayload,
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId
     ) throws IOException {

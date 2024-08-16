@@ -28,7 +28,8 @@ public class AppUtils {
     public static Map<String, String> createAccountObject(AccountPayload accountPayload) {
         Map<String, String> map = new HashMap<>();
         map.put("Name", accountPayload.getName());
-        map.put("AccountType", accountPayload.getAccountType());
+        map.put("AccountType", accountPayload.getAccountType().value());
+        map.put("AcctNum", accountPayload.getAcctNum());
         return map;
     }
 }
