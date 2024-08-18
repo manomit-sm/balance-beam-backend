@@ -3,12 +3,13 @@ package com.quickbook.playground.controllers;
 import com.quickbook.playground.bo.AccountPayload;
 import com.quickbook.playground.bo.HeaderPayload;
 import com.quickbook.playground.models.AccountResponse;
-import com.quickbook.playground.services.AccountService;
+import com.quickbook.playground.services.GenericService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +21,10 @@ import java.util.List;
 @RequestMapping("/account")
 @Slf4j
 @Tag(name = "Account", description = "Account Management of QuickBook")
+@RequiredArgsConstructor
 public class AccountController {
-    private final AccountService accountService;
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
+
+    private final GenericService<AccountPayload, AccountResponse> genericService;
 
     @Operation(
             summary = "Create an account",
@@ -38,7 +38,7 @@ public class AccountController {
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId
     ) throws IOException {
-        return ResponseEntity.ok(accountService.createAccount(accountPayload, new HeaderPayload(accessToken, realmId)));
+        return ResponseEntity.ok(genericService.create(accountPayload, new HeaderPayload(accessToken, realmId), "account", "Account", AccountResponse.class));
     }
 
     @Operation(
@@ -52,7 +52,7 @@ public class AccountController {
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId
     ) throws IOException {
-        return ResponseEntity.ok(accountService.retrieveAllAccount(new HeaderPayload(accessToken, realmId)));
+        return ResponseEntity.ok(genericService.list(new HeaderPayload(accessToken, realmId), "account", "Account"));
     }
 
     @Operation(
@@ -67,7 +67,7 @@ public class AccountController {
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId
     ) throws IOException {
-        return ResponseEntity.ok(accountService.getAccountById(new HeaderPayload(accessToken, realmId), id));
+        return ResponseEntity.ok(genericService.getById(new HeaderPayload(accessToken, realmId), id,  "account", "Account", AccountResponse.class));
     }
 
 }
