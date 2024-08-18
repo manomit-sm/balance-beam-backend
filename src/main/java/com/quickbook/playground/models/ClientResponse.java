@@ -1,4 +1,4 @@
-package com.quickbook.playground.bo;
+package com.quickbook.playground.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

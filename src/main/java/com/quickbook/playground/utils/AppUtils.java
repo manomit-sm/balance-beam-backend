@@ -25,10 +25,12 @@ public class AppUtils {
         return clientDetails.get(email);
     }
 
-    public static Map<String, String> createAccountObject(AccountPayload accountPayload) {
-        Map<String, String> map = new HashMap<>();
+    public static Map<String, Object> createAccountObject(AccountPayload accountPayload) {
+        Map<String, Object> map = new HashMap<>();
         map.put("Name", accountPayload.getName());
         map.put("AccountType", accountPayload.getAccountType());
+        map.put("AcctNum", accountPayload.getAcctNum());
+        map.put("AccountSubType", accountPayload.getAccountSubType());
         return map;
     }
 }

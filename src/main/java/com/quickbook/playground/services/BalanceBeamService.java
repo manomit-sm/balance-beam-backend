@@ -2,9 +2,9 @@ package com.quickbook.playground.services;
 
 import com.intuit.oauth2.exception.InvalidRequestException;
 import com.intuit.oauth2.exception.OAuthException;
-import com.quickbook.playground.bo.AuthResponse;
+import com.quickbook.playground.models.AuthResponse;
 import com.quickbook.playground.bo.AuthTokenRequest;
-import com.quickbook.playground.bo.ClientResponse;
+import com.quickbook.playground.models.ClientResponse;
 
 import java.io.IOException;
 
