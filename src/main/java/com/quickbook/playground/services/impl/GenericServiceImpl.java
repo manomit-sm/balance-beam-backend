@@ -11,8 +11,12 @@ import com.quickbook.playground.models.PurchaseResponse;
 import com.quickbook.playground.services.GenericService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
@@ -132,5 +136,40 @@ public class GenericServiceImpl<T, R> implements GenericService<T, R> {
                 .block();
         final JsonNode jsonNode = new JsonMapper().readTree(objectMapper.writeValueAsString(object));
         return objectMapper.readerFor(DeletedResponse.class).readValue(jsonNode.get(rootObject));
+    }
+
+    @Override
+    public Mono<byte[]> generatePdfFromId(HeaderPayload header, String id, String table) {
+        return webClient.get()
+                .uri(
+                        uriBuilder ->
+                                uriBuilder
+                                        .path("/v3/company/{realmId}/invoice/{id}/pdf")
+                                        .queryParam("minorversion", 73)
+                                        .build(header.realmId(), id)
+                )
+                .accept(MediaType.APPLICATION_PDF)
+                .headers(h -> h.setBearerAuth(header.accessToken()))
+                .exchangeToMono(response -> response
+                        .bodyToMono(ByteArrayResource.class))
+                .map(ByteArrayResource::getByteArray);
+    }
+
+    @Override
+    public Object sendEmailFromId(HeaderPayload header, String id, String table, String toEmail) {
+        return webClient.post()
+                .uri(
+                        uriBuilder ->
+                                uriBuilder
+                                        .path("/v3/company/{realmId}/invoice/{id}/send")
+                                        .queryParam("minorversion", 73)
+                                        .queryParam("sendTo", toEmail)
+                                        .build(header.realmId(), id)
+                )
+                .accept(APPLICATION_JSON)
+                .headers(h -> h.setBearerAuth(header.accessToken()))
+                .retrieve().bodyToMono(Object.class)
+                .doOnSuccess(response -> log.info("Email send successfully {}", id))
+                .block();
     }
 }
