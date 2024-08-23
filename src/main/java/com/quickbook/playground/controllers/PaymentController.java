@@ -2,6 +2,8 @@ package com.quickbook.playground.controllers;
 
 import com.quickbook.playground.bo.HeaderPayload;
 import com.quickbook.playground.bo.InvoiceRequest;
+import com.quickbook.playground.bo.PaymentRequest;
+import com.quickbook.playground.models.PaymentResponse;
 import com.quickbook.playground.services.GenericService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,64 +17,63 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/invoice")
+@RequestMapping("/payment")
 @Slf4j
-@Tag(name = "Invoice", description = "Invoices of QuickBook")
+@Tag(name = "Payment", description = "Payments of QuickBook")
 @RequiredArgsConstructor
-public class InvoiceController {
+public class PaymentController {
 
-    private final GenericService<InvoiceRequest, Object> invoiceService;
+    private final GenericService<PaymentRequest, PaymentResponse> paymentService;
 
     @Operation(
-            summary = "Create an invoice",
-            description = "Create an invoice in QuickBook")
+            summary = "Create a payment",
+            description = "Create a payment in QuickBook")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
     @PostMapping("/create")
-    public ResponseEntity<Object> createInvoice(
-            @Valid @RequestBody InvoiceRequest invoiceRequest,
+    public ResponseEntity<PaymentResponse> createPayment(
+            @Valid @RequestBody PaymentRequest paymentRequest,
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId
     ) throws IOException {
-        final Object invoiceResponse = invoiceService.create(invoiceRequest, new HeaderPayload(accessToken, realmId), "invoice", "Invoice", Object.class);
-        return ResponseEntity.ok(invoiceResponse);
+        final PaymentResponse paymentResponse = paymentService.create(paymentRequest, new HeaderPayload(accessToken, realmId), "payment", "Payment", PaymentResponse.class);
+        return ResponseEntity.ok(paymentResponse);
     }
 
     @Operation(
-            summary = "Invoice list",
-            description = "List all the invoices in QuickBook for the company")
+            summary = "Payment list",
+            description = "List all the payments in QuickBook for the company")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
     @GetMapping("/list")
-    public ResponseEntity<Object> listInvoices(
+    public ResponseEntity<Object> listPayment(
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId) throws IOException {
-        return ResponseEntity.ok(invoiceService.list(new HeaderPayload(accessToken, realmId), "invoice", "Invoice"));
+        return ResponseEntity.ok(paymentService.list(new HeaderPayload(accessToken, realmId), "payment", "Payment"));
     }
 
     @Operation(
-            summary = "Retrieve an invoice",
-            description = "Retrieve an invoice in QuickBook for the company")
+            summary = "Retrieve a payment",
+            description = "Retrieve a payment in QuickBook for the company")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getInvoiceById(
+    public ResponseEntity<PaymentResponse> getPaymentById(
             @PathVariable String id,
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId
     ) throws IOException {
-        return ResponseEntity.ok(invoiceService.getById(new HeaderPayload(accessToken, realmId), id, "invoice", "Invoice", Object.class));
+        return ResponseEntity.ok(paymentService.getById(new HeaderPayload(accessToken, realmId), id, "payment", "Payment", PaymentResponse.class));
     }
     @Operation(
             summary = "Generate PDF",
-            description = "Generate PDF for an invoice id")
+            description = "Generate PDF for a payment")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
@@ -82,12 +83,12 @@ public class InvoiceController {
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId) throws IOException {
 
-       return invoiceService.generatePdfFromId(new HeaderPayload(accessToken, realmId), id, "invoice");
+        return paymentService.generatePdfFromId(new HeaderPayload(accessToken, realmId), id, "payment");
     }
 
     @Operation(
             summary = "Send Email",
-            description = "Send email for invoice")
+            description = "Send email for payment")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
@@ -98,6 +99,6 @@ public class InvoiceController {
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId
     ) {
-        return ResponseEntity.ok(invoiceService.sendEmailFromId(new HeaderPayload(accessToken, realmId), id, "invoice", toEmail));
+        return ResponseEntity.ok(paymentService.sendEmailFromId(new HeaderPayload(accessToken, realmId), id, "payment", toEmail));
     }
 }

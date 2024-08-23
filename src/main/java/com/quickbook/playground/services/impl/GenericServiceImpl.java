@@ -144,9 +144,9 @@ public class GenericServiceImpl<T, R> implements GenericService<T, R> {
                 .uri(
                         uriBuilder ->
                                 uriBuilder
-                                        .path("/v3/company/{realmId}/invoice/{id}/pdf")
+                                        .path("/v3/company/{realmId}/{table}/{id}/pdf")
                                         .queryParam("minorversion", 73)
-                                        .build(header.realmId(), id)
+                                        .build(header.realmId(), table, id)
                 )
                 .accept(MediaType.APPLICATION_PDF)
                 .headers(h -> h.setBearerAuth(header.accessToken()))
@@ -161,10 +161,10 @@ public class GenericServiceImpl<T, R> implements GenericService<T, R> {
                 .uri(
                         uriBuilder ->
                                 uriBuilder
-                                        .path("/v3/company/{realmId}/invoice/{id}/send")
+                                        .path("/v3/company/{realmId}/{table}/{id}/send")
                                         .queryParam("minorversion", 73)
                                         .queryParam("sendTo", toEmail)
-                                        .build(header.realmId(), id)
+                                        .build(header.realmId(), table, id)
                 )
                 .accept(APPLICATION_JSON)
                 .headers(h -> h.setBearerAuth(header.accessToken()))
