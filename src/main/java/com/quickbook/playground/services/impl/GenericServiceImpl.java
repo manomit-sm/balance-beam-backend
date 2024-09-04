@@ -5,14 +5,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.intuit.ipp.data.ColData;
 import com.quickbook.playground.bo.HeaderPayload;
 import com.quickbook.playground.models.DeletedResponse;
-import com.quickbook.playground.models.PurchaseResponse;
+import com.quickbook.playground.models.TransactionListIntermediaryResponse;
+import com.quickbook.playground.models.TransactionListResponse;
 import com.quickbook.playground.services.GenericService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -171,5 +172,46 @@ public class GenericServiceImpl<T, R> implements GenericService<T, R> {
                 .retrieve().bodyToMono(Object.class)
                 .doOnSuccess(response -> log.info("Email send successfully {}", id))
                 .block();
+    }
+
+    @Override
+    public List<TransactionListResponse> getTransactionList(HeaderPayload header, String startDate, String endDate) throws IOException {
+        var object = webClient.get()
+                .uri(
+                        uriBuilder ->
+                                uriBuilder
+                                        .path("/v3/company/{realmId}/reports/TransactionList")
+                                        .queryParam("start_date", startDate)
+                                        .queryParam("end_date", endDate)
+                                        .queryParam("minorversion", 73)
+                                        .build(header.realmId())
+                ).accept(APPLICATION_JSON)
+                .headers(h -> h.setBearerAuth(header.accessToken()))
+                .retrieve().bodyToMono(Object.class)
+                .doOnSuccess(response -> log.info("Transaction list"))
+                .block();
+        final JsonNode jsonNode = new JsonMapper().readTree(objectMapper.writeValueAsString(object));
+        final List<TransactionListIntermediaryResponse> transactionList = objectMapper.readerFor(new TypeReference<List<TransactionListIntermediaryResponse>>() {
+        }).readValue(jsonNode.get("Rows").get("Row"));
+        transactionList.forEach(elem -> System.out.println(elem.getColData().get(0).getValue()));
+        return transactionList
+                .stream()
+                .map(this::transformTransactionData)
+                .toList();
+    }
+
+    private TransactionListResponse transformTransactionData(TransactionListIntermediaryResponse elem) {
+        return new TransactionListResponse
+                .Builder()
+                .setTransactionDate(elem.getColData().get(0).getValue())
+                .setTransactionType(elem.getColData().get(1).getValue())
+                .setDocumentNumber(elem.getColData().get(2).getValue())
+                .setPosting(elem.getColData().get(3).getValue())
+                .setName(elem.getColData().get(4).getValue())
+                .setDescription(elem.getColData().get(5).getValue())
+                .setAccountName(elem.getColData().get(6).getValue())
+                .setSplit(elem.getColData().get(7).getValue())
+                .setAmount(elem.getColData().get(8).getValue())
+                .build();
     }
 }

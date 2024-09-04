@@ -1,8 +1,10 @@
 package com.quickbook.playground.services;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.quickbook.playground.bo.HeaderPayload;
 import com.quickbook.playground.models.DeletedResponse;
+import com.quickbook.playground.models.TransactionListResponse;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -23,6 +25,10 @@ public interface GenericService <T, R> {
     }
 
     default Object sendEmailFromId(HeaderPayload header, String id, String table, String toEmail) {
+        return null;
+    }
+
+    default List<TransactionListResponse> getTransactionList(HeaderPayload header, String startDate, String endDate) throws IOException {
         return null;
     }
 }
