@@ -1,7 +1,9 @@
 package com.quickbook.playground.controllers;
 
+import com.quickbook.playground.bo.DeleteRequest;
 import com.quickbook.playground.bo.HeaderPayload;
 import com.quickbook.playground.bo.InvoiceRequest;
+import com.quickbook.playground.models.DeletedResponse;
 import com.quickbook.playground.services.GenericService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,6 +28,7 @@ import java.io.IOException;
 public class InvoiceController {
 
     private final GenericService<InvoiceRequest, Object> invoiceService;
+    private final GenericService<DeleteRequest, DeletedResponse> invoiceDeleteService;
 
     @Operation(
             summary = "Create an invoice",
@@ -99,5 +102,30 @@ public class InvoiceController {
             @RequestHeader(name = "realmId") Long realmId
     ) {
         return ResponseEntity.ok(invoiceService.sendEmailFromId(new HeaderPayload(accessToken, realmId), id, "invoice", toEmail));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<DeletedResponse> deleteInvoice(
+            @Valid @RequestBody DeleteRequest deleteRequest,
+            @RequestHeader(name = "access-token") String accessToken,
+            @RequestHeader(name = "realmId") Long realmId
+    ) throws IOException {
+        return ResponseEntity.ok(invoiceDeleteService.delete(deleteRequest, new HeaderPayload(accessToken, realmId), "invoice", "Invoice"));
+    }
+
+    @Operation(
+            summary = "Update an invoice",
+            description = "Update an invoice in QuickBook")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateInvoice(
+            @Valid @RequestBody InvoiceRequest invoiceRequest,
+            @RequestHeader(name = "access-token") String accessToken,
+            @RequestHeader(name = "realmId") Long realmId
+    ) throws IOException {
+        final Object updated = invoiceService.update(invoiceRequest, new HeaderPayload(accessToken, realmId), "invoice", "Invoice", Object.class);
+        return ResponseEntity.ok(updated);
     }
 }
