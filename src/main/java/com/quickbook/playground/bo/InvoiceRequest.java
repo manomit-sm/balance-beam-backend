@@ -27,6 +27,14 @@ public class InvoiceRequest {
     @JsonPropertyDescription("When EmailStatus is set NeedToSend")
     private BillEmail BillEmail;
 
+    @JsonProperty("Id")
+    @JsonPropertyDescription("Only for update item")
+    private String Id;
+
+    @JsonProperty("SyncToken")
+    @JsonPropertyDescription("Only for update item")
+    private String SyncToken;
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
