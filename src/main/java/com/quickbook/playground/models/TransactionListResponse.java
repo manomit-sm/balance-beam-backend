@@ -13,6 +13,7 @@ public class TransactionListResponse {
     private final String accountName;
     private final String split;
     private final String amount;
+    private final String transactionTypeId;
 
     private TransactionListResponse(Builder builder) {
         this.accountName = builder.accountName;
@@ -24,6 +25,7 @@ public class TransactionListResponse {
         this.documentNumber = builder.documentNumber;
         this.name = builder.name;
         this.split = builder.split;
+        this.transactionTypeId = builder.transactionTypeId;
     }
 
     public static class Builder {
@@ -36,6 +38,7 @@ public class TransactionListResponse {
         private String accountName;
         private String split;
         private String amount;
+        private String transactionTypeId;
 
         public Builder setTransactionDate(String transactionDate) {
             this.transactionDate = transactionDate;
@@ -79,6 +82,11 @@ public class TransactionListResponse {
 
         public Builder setAmount(String amount) {
             this.amount = amount;
+            return this;
+        }
+
+        public Builder setTransactionTypeId(String transactionTypeId) {
+            this.transactionTypeId = transactionTypeId;
             return this;
         }
         public TransactionListResponse build(){
