@@ -205,6 +205,7 @@ public class GenericServiceImpl<T, R> implements GenericService<T, R> {
                 .Builder()
                 .setTransactionDate(elem.getColData().get(0).getValue())
                 .setTransactionType(elem.getColData().get(1).getValue())
+                .setTransactionTypeId(elem.getColData().get(1).getId())
                 .setDocumentNumber(elem.getColData().get(2).getValue())
                 .setPosting(elem.getColData().get(3).getValue())
                 .setName(elem.getColData().get(4).getValue())
