@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: playground-app
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://oauth.platform.intuit.com/op/v1/jwks
   profiles:
     active: dev
   mvc:

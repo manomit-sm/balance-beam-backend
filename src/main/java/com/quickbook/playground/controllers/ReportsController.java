@@ -5,6 +5,7 @@ import com.quickbook.playground.services.GenericService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.io.IOException;
 @RequestMapping("/report")
 @Tag(name = "Reports", description = "Reports such as Profit And Loss, Cash Flow and Balance Sheet")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class ReportsController {
 
     private final GenericService<Object, Object> genericService;

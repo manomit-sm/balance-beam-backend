@@ -7,6 +7,7 @@ import com.quickbook.playground.services.GenericService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequestMapping("/account")
 @Slf4j
 @Tag(name = "Account", description = "Account Management of QuickBook")
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 public class AccountController {
 
