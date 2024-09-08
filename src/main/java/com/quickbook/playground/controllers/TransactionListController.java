@@ -2,7 +2,6 @@ package com.quickbook.playground.controllers;
 
 import com.quickbook.playground.bo.HeaderPayload;
 import com.quickbook.playground.models.TransactionListResponse;
-import com.quickbook.playground.models.VendorResponse;
 import com.quickbook.playground.services.GenericService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
