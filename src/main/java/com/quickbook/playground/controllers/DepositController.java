@@ -8,6 +8,7 @@ import com.quickbook.playground.services.GenericService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.List;
 @Slf4j
 @Tag(name = "Deposit", description = "Deposit of QuickBook")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class DepositController {
 
     private final GenericService<DepositRequest, DepositResponse> genericService;

@@ -54,7 +54,8 @@ public class QuickBookImpl implements QuickBook {
             bearerTokenResponse.getAccessToken(),
             bearerTokenResponse.getTokenType(),
             bearerTokenResponse.getRefreshToken(),
-            bearerTokenResponse.getExpiresIn()
+            bearerTokenResponse.getExpiresIn(),
+            bearerTokenResponse.getIdToken()
         );
     }
 }
