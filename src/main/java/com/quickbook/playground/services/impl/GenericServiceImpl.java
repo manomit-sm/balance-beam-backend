@@ -200,6 +200,63 @@ public class GenericServiceImpl<T, R> implements GenericService<T, R> {
                 .toList();
     }
 
+    @Override
+    public Object getBalanceSheet(HeaderPayload header, String startDate, String endDate) {
+        return webClient.get()
+                .uri(
+                        uriBuilder ->
+                                uriBuilder
+                                        .path("/v3/company/{realmId}/reports/BalanceSheet")
+                                        .queryParam("start_date", startDate)
+                                        .queryParam("end_date", endDate)
+                                        .queryParam("summarize_column_by", "Month")
+                                        .queryParam("minorversion", 73)
+                                        .build(header.realmId())
+                ).accept(APPLICATION_JSON)
+                .headers(h -> h.setBearerAuth(header.accessToken()))
+                .retrieve().bodyToMono(Object.class)
+                .doOnSuccess(response -> log.info("Balance Sheet"))
+                .block();
+    }
+
+    @Override
+    public Object getCashFlow(HeaderPayload header, String startDate, String endDate) {
+        return webClient.get()
+                .uri(
+                        uriBuilder ->
+                                uriBuilder
+                                        .path("/v3/company/{realmId}/reports/CashFlow")
+                                        .queryParam("start_date", startDate)
+                                        .queryParam("end_date", endDate)
+                                        .queryParam("summarize_column_by", "Month")
+                                        .queryParam("minorversion", 73)
+                                        .build(header.realmId())
+                ).accept(APPLICATION_JSON)
+                .headers(h -> h.setBearerAuth(header.accessToken()))
+                .retrieve().bodyToMono(Object.class)
+                .doOnSuccess(response -> log.info("Cash Flow"))
+                .block();
+    }
+
+    @Override
+    public Object getProfitAndLoss(HeaderPayload header, String startDate, String endDate) {
+        return webClient.get()
+                .uri(
+                        uriBuilder ->
+                                uriBuilder
+                                        .path("/v3/company/{realmId}/reports/ProfitAndLoss")
+                                        .queryParam("start_date", startDate)
+                                        .queryParam("end_date", endDate)
+                                        .queryParam("summarize_column_by", "Month")
+                                        .queryParam("minorversion", 73)
+                                        .build(header.realmId())
+                ).accept(APPLICATION_JSON)
+                .headers(h -> h.setBearerAuth(header.accessToken()))
+                .retrieve().bodyToMono(Object.class)
+                .doOnSuccess(response -> log.info("Profit And Loss"))
+                .block();
+    }
+
     private TransactionListResponse transformTransactionData(TransactionListIntermediaryResponse elem) {
         return new TransactionListResponse
                 .Builder()
