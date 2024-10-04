@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.io.IOException;
 @Tag(name = "Reports", description = "Reports such as Profit And Loss, Cash Flow and Balance Sheet")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
+@Slf4j
 public class ReportsController {
 
     private final GenericService<Object, Object> genericService;
@@ -65,8 +68,10 @@ public class ReportsController {
             @RequestHeader(name = "access-token") String accessToken,
             @RequestHeader(name = "realmId") Long realmId,
             @RequestParam String startDate,
-            @RequestParam String endDate
+            @RequestParam String endDate,
+            JwtAuthenticationToken auth
     ) throws IOException {
+        log.info("User Details {}", auth.getToken().getId());
         return ResponseEntity.ok(genericService.getCashFlow(new HeaderPayload(accessToken,realmId), startDate, endDate));
     }
 }
