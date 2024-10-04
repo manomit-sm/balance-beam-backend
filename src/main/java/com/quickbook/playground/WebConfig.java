@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins( "http://localhost:3000",  // Replace with your frontend URL
                     "http://0.0.0.0:3000",
-                    "https://api.balancebeamtax.com") // Replace with your frontend URL
+                    "https://www.balancebeamtax.com") // Replace with your frontend URL
 
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
