@@ -19,6 +19,7 @@ public class BalanceBeamSecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/balance-beam/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/webjars/swagger-ui/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
